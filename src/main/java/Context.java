@@ -1,8 +1,8 @@
 import java.util.*;
 
 public class Context {
-    private final Map<CofxName, Object> coeffects;
-    private final Map<FxName, Object> effects;
+    private final Map<CoFxId, Object> coeffects;
+    private final Map<FxId, Object> effects;
 
     private final Queue<Interceptor> interceptorQueue;
     private final Stack<Interceptor> interceptorStack;
@@ -14,28 +14,28 @@ public class Context {
         interceptorStack = new Stack<>();
     }
 
-    public <T> Context cofx(CofxName key, T cofx) {
-        coeffects.put(key, cofx);
+    public <T> Context cofx(Coeffect<T> coeffect) {
+        coeffects.put(coeffect.id(), coeffect);
         return this;
     }
 
-    public <T> Context fx(FxName key, T effect) {
-        effects.put(key, effect);
+    public <T> Context fx(Effect<T> effect) {
+        effects.put(effect.id(), effect);
         return this;
     }
 
-    public <T> T getEffect(FxName key) {
+    public <T> T getEffect(FxId key) {
         Object obj = effects.get(key);
         return (T) obj;
     }
 
-    public <T> T getCoFx(CofxName key) {
+    public <T> T getCoFx(CoFxId key) {
         Object obj = coeffects.get(key);
         return (T) obj;
     }
 
     public <T> T getEvent() {
-        return (T) coeffects.get(CofxName.event);
+        return (T) coeffects.get(CoFxId.EVENT);
     }
 
 

@@ -1,3 +1,0 @@
-public enum FxName {
-    db, dispatch, print // ...
-}

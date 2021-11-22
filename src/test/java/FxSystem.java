@@ -1,18 +1,16 @@
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 public class FxSystem {
     @Test
     public void test() {
-        Interceptor greet = new GreetEvent();
+        Interceptor greet = new GreetEventFxHandler();
         Interceptor effectHandler = new EffectHandler();
-        Context ctx = new Context(Arrays.asList(effectHandler, greet))
-                .cofx(CofxName.event, new String[]{"greet", "Peter"});
+        //Context ctx = new Context(Arrays.asList(effectHandler, greet))
+        //        .cofx(CoFxId.EVENT, new String[]{"greet", "Peter"});
 
-        ctx.run();
+        //ctx.run();
 
     }
 }

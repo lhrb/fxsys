@@ -1,16 +1,15 @@
 import java.util.function.Function;
 
-public class GreetEvent implements Interceptor {
+public class GreetEventFxHandler implements Interceptor {
     @Override
     public String name() {
-        return GreetEvent.class.getSimpleName();
+        return GreetEventFxHandler.class.getSimpleName();
     }
 
     @Override
     public Function<Context, Context> enter() {
         return context -> {
-            String[] greet = context.getEvent();
-            context.fx(FxName.print, greet[1]);
+            //context.fx();
             return context;
         };
     }
