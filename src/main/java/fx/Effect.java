@@ -1,3 +1,5 @@
+package fx;
+
 /**
  * representation of an effect as data
  */

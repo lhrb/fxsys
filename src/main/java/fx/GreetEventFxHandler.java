@@ -1,3 +1,5 @@
+package fx;
+
 import java.util.function.Function;
 
 public class GreetEventFxHandler implements Interceptor {
