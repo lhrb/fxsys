@@ -1,8 +1,11 @@
 package example;
 
 import example.effects.DbFxHandler;
+import example.effects.InputFxHandler;
 import example.events.AddUserEvent;
 import example.events.AddUserEventHandler;
+import example.events.CreateUserEvent;
+import example.events.CreateUserEventHandler;
 import fx.Context;
 import fx.FxSys;
 import fx.data.EventCoFx;
@@ -13,23 +16,33 @@ import java.util.Collection;
 
 public class Example {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         var fxSystem = new FxSys();
 
         var db = new DB();
-        var dbFxHandler = new DbFxHandler(db);
         Collection<Interceptor> interceptors = Arrays.asList(
-                dbFxHandler,
+                new DbFxHandler(db),
                 new AddUserEventHandler()
         );
 
+        Collection<Interceptor> createUser = Arrays.asList(
+                new InputFxHandler(fxSystem::dispatch),
+                new CreateUserEventHandler()
+        );
+
         fxSystem.registerEventRoute(AddUserEvent.id, interceptors);
+        fxSystem.registerEventRoute(CreateUserEvent.id, createUser);
 
         fxSystem.dispatch(new AddUserEvent(new DB.User("Peter", 30)));
         fxSystem.dispatch(new AddUserEvent(new DB.User("Peter", 30)));
         fxSystem.dispatch(new AddUserEvent(new DB.User("Hilde", 32)));
+        fxSystem.dispatch(new CreateUserEvent());
 
+        
+        Thread.sleep(10000);
         fxSystem.shutdown();
         db.getUsers().forEach(System.out::println);
+
+        System.exit(0);
     }
 }

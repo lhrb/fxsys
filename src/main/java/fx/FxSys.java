@@ -16,7 +16,7 @@ public class FxSys {
 
     public FxSys() {
         // this is probably somewhat over-engineered, implemented like this just for my own learning
-        exec.execute(() -> {
+        exec.submit(() -> {
             try {
                 while (true)
                     processEvent(workQueue.take());
@@ -41,7 +41,7 @@ public class FxSys {
     public void shutdown() {
         exec.shutdown();
         try {
-            exec.awaitTermination(300, TimeUnit.MILLISECONDS);
+            exec.awaitTermination(100, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
