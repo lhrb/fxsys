@@ -24,6 +24,7 @@ For every event we register a specific route of interceptors. A route gets then 
 
 #### EffectHandler
 Currently, EffectHandler are doing two things:
+
 On enter we inject Coeffects to the context map. Coeffects are the current state of the world. Basically
 data from the running application (for example the db) which does not come along with the event.
 
