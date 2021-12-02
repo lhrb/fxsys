@@ -4,6 +4,7 @@ import example.effects.DbFxHandler;
 import example.events.AddUserEvent;
 import example.events.AddUserEventHandler;
 import fx.Context;
+import fx.FxSys;
 import fx.data.EventCoFx;
 import fx.interceptors.Interceptor;
 
@@ -13,6 +14,8 @@ import java.util.Collection;
 public class Example {
 
     public static void main(String[] args) {
+        var fxSystem = new FxSys();
+
         var db = new DB();
         var dbFxHandler = new DbFxHandler(db);
         Collection<Interceptor> interceptors = Arrays.asList(
@@ -20,18 +23,13 @@ public class Example {
                 new AddUserEventHandler()
         );
 
-        Context ctx = new Context(interceptors);
-        ctx.addCoFx(new EventCoFx<>(new AddUserEvent(new DB.User("Peter", 30))));
-        ctx.run();
+        fxSystem.registerEventRoute(AddUserEvent.id, interceptors);
 
-        Context ctx2 = new Context(interceptors);
-        ctx2.addCoFx(new EventCoFx<>(new AddUserEvent(new DB.User("Peter", 30))));
-        ctx2.run();
+        fxSystem.dispatch(new AddUserEvent(new DB.User("Peter", 30)));
+        fxSystem.dispatch(new AddUserEvent(new DB.User("Peter", 30)));
+        fxSystem.dispatch(new AddUserEvent(new DB.User("Hilde", 32)));
 
-        Context ctx3 = new Context(interceptors);
-        ctx3.addCoFx(new EventCoFx<>(new AddUserEvent(new DB.User("Hilde", 30))));
-        ctx3.run();
-
+        fxSystem.shutdown();
         db.getUsers().forEach(System.out::println);
     }
 }

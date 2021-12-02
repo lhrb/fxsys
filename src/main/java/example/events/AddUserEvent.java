@@ -6,6 +6,8 @@ import fx.data.EventId;
 
 public class AddUserEvent implements Event<DB.User> {
 
+    public final static EventId id = new EventId("addUserEvent");
+
     private final DB.User user;
 
     public AddUserEvent(DB.User user) {
@@ -14,7 +16,7 @@ public class AddUserEvent implements Event<DB.User> {
 
     @Override
     public EventId id() {
-        return new EventId("addUserEvent");
+        return id;
     }
 
     @Override
