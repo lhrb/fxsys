@@ -1,4 +1,4 @@
-package fx;
+package fx.data;
 
 /**
  * representation of an effect as data

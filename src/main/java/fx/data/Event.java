@@ -1,4 +1,6 @@
-package fx;
+package fx.data;
+
+import fx.data.EventId;
 
 /**
  * representation of an event as data

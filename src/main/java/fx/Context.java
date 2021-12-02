@@ -1,5 +1,12 @@
 package fx;
 
+import fx.data.CoFxId;
+import fx.data.Coeffect;
+import fx.data.Effect;
+import fx.data.FxId;
+import fx.data.EventCoFx;
+import fx.interceptors.Interceptor;
+
 import java.util.*;
 
 public class Context {
@@ -16,12 +23,12 @@ public class Context {
         interceptorStack = new Stack<>();
     }
 
-    public <T> Context cofx(Coeffect<T> coeffect) {
+    public <T> Context addCoFx(Coeffect<T> coeffect) {
         coeffects.put(coeffect.id(), coeffect);
         return this;
     }
 
-    public <T> Context fx(Effect<T> effect) {
+    public <T> Context addFx(Effect<T> effect) {
         effects.put(effect.id(), effect);
         return this;
     }
@@ -37,7 +44,8 @@ public class Context {
     }
 
     public <T> T getEvent() {
-        return (T) coeffects.get(CoFxId.EVENT);
+        EventCoFx event = (EventCoFx) coeffects.get(CoFxId.EVENT);
+        return (T) event.payload();
     }
 
 
