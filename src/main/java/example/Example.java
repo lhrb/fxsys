@@ -6,9 +6,7 @@ import example.events.AddUserEvent;
 import example.events.AddUserEventHandler;
 import example.events.CreateUserEvent;
 import example.events.CreateUserEventHandler;
-import fx.Context;
 import fx.FxSys;
-import fx.data.EventCoFx;
 import fx.interceptors.Interceptor;
 
 import java.util.Arrays;
@@ -38,11 +36,11 @@ public class Example {
         fxSystem.dispatch(new AddUserEvent(new DB.User("Hilde", 32)));
         fxSystem.dispatch(new CreateUserEvent());
 
-        
-        Thread.sleep(10000);
-        fxSystem.shutdown();
-        db.getUsers().forEach(System.out::println);
+        while (db.getUsers().size() < 3) {
+            Thread.sleep(500);
+        }
 
+        db.getUsers().forEach(System.out::println);
         System.exit(0);
     }
 }
