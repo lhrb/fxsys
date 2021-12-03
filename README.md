@@ -34,3 +34,30 @@ does only allow one event of a type.)
 #### EventHandler
 Processing an event and compute a resulting effect which gets attached to the context map. 
 Note the effect should get represented as data. This will make it easy to test the EventHandler.
+
+## Design Goals
+
+### Composablility
+* Should be like Lego
+* Interceptors and therefore the derived Event- and EffectHandler all share the same interface.
+* Enter and Exit methods returning a function which takes a context map and returns a context map.
+* Given the above we are able to configure routes in any way we can think of  .
+
+### Testability
+* **EventHandler** 
+  * Takes data from a context map -> calculates a effect which is expressed as data and then 
+appends the effect to the context map. Which makes EventHandler easily testable.
+* **EffectHandler** 
+  * Coeffect injection is easily testable (does it append the coeffect to the context map?).
+  * Effect execution affects the world state and is therefore only testable by observing the world.
+  * We can inject Interceptors into a route to remove other Interceptors from the queue/stack.
+    
+### Reuse
+* For example a Database-Interceptor which injects on `enter` the DB as coeffect and performs all transaction 
+  on `exit` should be reusable for different routes.
+
+### Pragmatic
+This is all fine, but I already have a lot of effectful legacy code working with events and I want to migrate this
+quickly.
+
+It's possible to just put effectful code into an Interceptors `enter` or `exit` method and ignore the event system.
