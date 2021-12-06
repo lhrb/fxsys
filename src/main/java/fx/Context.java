@@ -50,13 +50,14 @@ public class Context {
 
 
     public void run() {
-        while (runNext());
+        while (doNext());
     }
 
-    // experimental dirty method -> use iterable/iterator
-    public boolean runNext() {
+    // experimental
+    private boolean doNext() {
         Interceptor nextEnter = interceptorQueue.poll();
         if (nextEnter != null) {
+            // push to stack first. The interceptor can then decide to remove itself from the stack.
             interceptorStack.push(nextEnter);
             System.out.println("Apply enter: " + nextEnter.name());
             nextEnter.enter().apply(this);
