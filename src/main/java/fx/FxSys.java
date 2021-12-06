@@ -15,7 +15,7 @@ public class FxSys {
     private final Map<EventId, Collection<Interceptor>> routes = new HashMap<>();
 
     public FxSys() {
-        // this is probably somewhat over-engineered, implemented like this just for my own learning
+        // this is probably somewhat over-engineered
         exec.submit(() -> {
             try {
                 while (true)
@@ -34,7 +34,7 @@ public class FxSys {
 
     public <T> FxSys dispatch(Event<T> event)
     {
-        workQueue.add(event);
+        workQueue.offer(event);
         return this;
     }
 
