@@ -11,8 +11,34 @@ This project adopted `Interceptors` `Context` and the first three Dominoes `Even
 
 ## About
 
+### Context Map
+Represents the current state of computation. Has the following structure:
+```clojure
+{
+ :coeffects {:CoFxId cofx}
+ :effects {:FxId [fxs]}
+  
+ :interceptorQueue [i2 i3]
+ :interceptorStack [i1 i0]
+ }
+
+```
+* `coeffects` additional input, when the calculation of an event depend on additional context.
+* `effects` state changing results of an event.
+* `interceptorQueue` all interceptors whose `enter` method has not been called yet.
+* `interceptorStack` all interceptors whose `exit` method has not been called yet and are not part of the `InterceptorQueue`.
+
+### FxSys
+* provides dispatch method
+* manages event routes
+
+#### Routes
+A mapping of an event-id and the interceptors which run, in the given order, when an event gets dispatched.
+
+`{:EventId [i0 i1 i2]}`
+
 ### Interceptors
-Interceptors are the building blocks for the data pipeline. Every Interceptor implements two Functions:
+Interceptors are the building blocks of the data pipeline. Every Interceptor implements two Functions:
 
 Enter: `Function<Context, Context>`
 
@@ -38,10 +64,9 @@ Note the effect should get represented as data. This will make it easy to test t
 ## Design Goals
 
 ### Composablility
-* Should be like Lego
 * Interceptors and therefore the derived Event- and EffectHandler all share the same interface.
 * Enter and Exit methods returning a function which takes a context map and returns a context map.
-* Given the above we are able to configure routes in any way we can think of  .
+* Routes are also composable. An effect dispatches a new event -> the output of one route is the input of another.  
 
 ### Testability
 * **EventHandler** 
